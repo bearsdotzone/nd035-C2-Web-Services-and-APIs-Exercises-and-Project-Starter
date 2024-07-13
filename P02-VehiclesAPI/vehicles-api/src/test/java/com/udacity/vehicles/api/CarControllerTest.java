@@ -67,21 +67,24 @@ public class CarControllerTest {
 
     /**
      * Tests for successful creation of new car in the system
+     *
      * @throws Exception when car creation fails in the system
      */
     @Test
     public void createCar() throws Exception {
         Car car = getCar();
         mvc.perform(
-                post(new URI("/cars"))
-                        .content(json.write(car).getJson())
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
-                        .accept(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isCreated());
+                   post(new URI("/cars"))
+                           .content(json.write(car)
+                                        .getJson())
+                           .contentType(MediaType.APPLICATION_JSON_UTF8)
+                           .accept(MediaType.APPLICATION_JSON_UTF8))
+           .andExpect(status().isCreated());
     }
 
     /**
      * Tests if the read operation appropriately returns a list of vehicles.
+     *
      * @throws Exception if the read operation of the vehicle list fails
      */
     @Test
@@ -92,18 +95,21 @@ public class CarControllerTest {
          *   below (the vehicle will be the first in the list).
          */
 
-        mvc.perform(get(new URI("/cars"))).andExpect(status().isOk());
+        mvc.perform(get(new URI("/cars")))
+           .andExpect(status().isOk());
 
     }
 
     /**
      * Tests the read operation for a single car by ID.
+     *
      * @throws Exception if the read operation for a single car fails
      */
     @Test
     public void findCar() throws Exception {
 
-        mvc.perform(get(new URI("/cars/1"))).andExpect(status().isOk());
+        mvc.perform(get(new URI("/cars/1")))
+           .andExpect(status().isOk());
     }
 
     @Test
@@ -117,16 +123,19 @@ public class CarControllerTest {
 
     /**
      * Tests the deletion of a single car by ID.
+     *
      * @throws Exception if the delete operation of a vehicle fails
      */
     @Test
     public void deleteCar() throws Exception {
 
-        mvc.perform(delete(new URI("/cars/1"))).andExpect(status().isNoContent());
+        mvc.perform(delete(new URI("/cars/1")))
+           .andExpect(status().isNoContent());
     }
 
     /**
      * Creates an example Car object for use in testing.
+     *
      * @return an example Car object
      */
     private Car getCar() {
