@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Implements the car service create, read, update or delete
@@ -98,17 +99,22 @@ public class CarService {
      * @return the new/updated car is stored in the repository
      */
     public Car save(Car car) {
-
-        try {
-            return repository.findById(car.getId())
-                             .map(carToBeUpdated -> {
-                                 carToBeUpdated.setDetails(car.getDetails());
-                                 carToBeUpdated.setLocation(car.getLocation());
-                                 return repository.save(carToBeUpdated);
-                             })
-                             .orElseThrow(CarNotFoundException::new);
-        } catch (CarNotFoundException e) {
+        if (Objects.isNull(car.getId())) {
             return repository.save(car);
+        } else {
+            try {
+                return repository.findById(car.getId())
+                                 .map(carToBeUpdated -> {
+                                     carToBeUpdated.setDetails(car.getDetails());
+                                     carToBeUpdated.setLocation(car.getLocation());
+                                     carToBeUpdated.setCondition(car.getCondition());
+                                     carToBeUpdated.setId(car.getId());
+                                     return repository.save(carToBeUpdated);
+                                 })
+                                 .orElseThrow(CarNotFoundException::new);
+            } catch (CarNotFoundException e) {
+                return repository.save(car);
+            }
         }
     }
 
